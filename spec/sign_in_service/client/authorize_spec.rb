@@ -20,7 +20,7 @@ RSpec.describe SignInService::Client::Authorize do
   let(:expected_response_status) { 'some-status' }
   let(:expected_response_headers) { {} }
 
-  before :example, request: true do
+  before :example, :request do
     stub_request(request_method, "#{base_url}#{request_uri}")
       .with({ query: request_query, body: request_body }.compact)
       .to_return({ body: expected_response_body, headers: expected_response_headers,
@@ -38,7 +38,7 @@ RSpec.describe SignInService::Client::Authorize do
     end
   end
 
-  describe '#authorize', request: true do
+  describe '#authorize', :request do
     let(:request_method) { :get }
     let(:request_uri) { '/v0/sign_in/authorize' }
     let(:request_query) { { type:, acr:, code_challenge:, code_challenge_method:, client_id: } }
@@ -63,7 +63,7 @@ RSpec.describe SignInService::Client::Authorize do
     end
   end
 
-  describe '#get_token', request: true do
+  describe '#get_token', :request do
     let(:request_method) { :post }
     let(:request_uri) { '/v0/sign_in/token' }
 

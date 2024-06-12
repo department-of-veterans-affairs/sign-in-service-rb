@@ -38,7 +38,7 @@ RSpec.describe SignInService::Client do
       let(:auth_type) { :api }
 
       it 'returns true' do
-        expect(client.api_auth?).to eq(true)
+        expect(client.api_auth?).to be(true)
       end
     end
 
@@ -46,7 +46,7 @@ RSpec.describe SignInService::Client do
       let(:auth_type) { :cookie }
 
       it 'returns false' do
-        expect(client.api_auth?).to eq(false)
+        expect(client.api_auth?).to be(false)
       end
     end
   end
@@ -56,7 +56,7 @@ RSpec.describe SignInService::Client do
       let(:auth_type) { :cookie }
 
       it 'returns true' do
-        expect(client.cookie_auth?).to eq(true)
+        expect(client.cookie_auth?).to be(true)
       end
     end
 
@@ -64,7 +64,7 @@ RSpec.describe SignInService::Client do
       let(:auth_type) { :api }
 
       it 'returns false' do
-        expect(client.cookie_auth?).to eq(false)
+        expect(client.cookie_auth?).to be(false)
       end
     end
   end
