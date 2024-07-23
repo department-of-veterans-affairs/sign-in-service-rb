@@ -12,7 +12,7 @@ The Revoke Token Endpoint is responsible for revoking a session.
 ### Example Usage
 
 ```ruby
-  client = SignInService.client
+  client = SignInService::Client.new
   refresh_token refresh_token = "your_refresh_token"
   anti_csrf_token = "your_anti_csrf_token" (optional)
 

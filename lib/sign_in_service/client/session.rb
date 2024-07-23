@@ -3,28 +3,10 @@
 module SignInService
   class Client
     module Session
-      INTROSPECT_PATH = '/v0/sign_in/introspect'
       LOGOUT_PATH = '/v0/sign_in/logout'
       REFRESH_PATH = '/v0/sign_in/refresh'
       REVOKE_PATH = '/v0/sign_in/revoke'
       REVOKE_ALL_PATH = '/v0/sign_in/revoke_all_sessions'
-
-      ##
-      # Get user data of associated user
-      #
-      # @param access_token [String] Access token for associated user
-      #
-      # @return [Faraday::Response] User attributs in JSON body
-      #
-      def introspect(access_token:)
-        connection.get(INTROSPECT_PATH) do |req|
-          req.headers = if cookie_auth?
-                          cookie_header({ access_token: })
-                        else
-                          api_header(access_token)
-                        end
-        end
-      end
 
       ##
       # Destroys the user session associated with the access token.

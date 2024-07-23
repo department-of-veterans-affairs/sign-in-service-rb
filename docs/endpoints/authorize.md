@@ -15,7 +15,7 @@ The `authorize_url` method is used to generate a URL.
 ### Example
 
 ```ruby
-   client = SignInService.client
+   client = SignInService::Client.new
 
    type = "your_csp_type"
    acr = "your_acr"
@@ -43,7 +43,7 @@ The `authorize` method is used to interact with the Authorize Endpoint
 
 ### Example Usage
 ```ruby
-  client = SignInService.client
+  client = SignInService::Client.new
 
   # Required parameters
   type = "your_csp_type"

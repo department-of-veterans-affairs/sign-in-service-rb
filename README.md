@@ -14,14 +14,14 @@ gem 'sign_in_service', :git => 'git://github.com/department-of-veterans-affairs/
 ```bash
 bundle install
 ```
-## Configuration
+## Client Configuration
 
 Configure the SignInService client with your base URL, client ID, and authentication type in an initializer:
 
 ```ruby
 require 'sign_in_service'
 
-SignInService.configure do |config|
+SignInService::Client.configure do |config|
   config.base_url = 'https://your_sign_in_service_url'
   config.client_id = 'your_client_id'
   config.auth_type = :cookie # or :api
@@ -45,7 +45,6 @@ With API authentication, tokens are returned in the response body. This approach
 
 #### Session Management
 - [Refresh](docs/endpoints/refresh.md) - Refresh session tokens.
-- [Introspect](docs/endpoints/introspect.md) - Retrieve user data associated with an access token.
 - [Logout](docs/endpoints/logout.md) - Log out the user and revoke tokens.
 - [Revoke Token](docs/endpoints/revoke_token.md) - Revoke a sessions tokens.
 - [Revoke All Sessions](docs/endpoints/revoke_all_sessions.md) - Revoke all sessions associated with a user
