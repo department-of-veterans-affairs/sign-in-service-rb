@@ -4,20 +4,36 @@ require 'faraday'
 
 require_relative 'client/authorize'
 require_relative 'client/session'
+require_relative 'client/config'
 require_relative 'response/raise_error'
 
 module SignInService
   class Client
+    include SignInService::Client::Config
     include SignInService::Client::Authorize
     include SignInService::Client::Session
 
+    COOKIE_TOKEN_PREFIX = 'vagov'
+    AUTH_TYPES = [COOKIE_AUTH = :cookie, API_AUTH = :api].freeze
+    AUTH_FLOWS = [PKCE_FLOW = :pkce, JWT_FLOW = :jwt].freeze
+
+    class << self
+      def configure
+        yield Config
+      end
+
+      def config
+        Config
+      end
+    end
+
     attr_accessor :base_url, :client_id, :auth_type, :auth_flow
 
-    def initialize(base_url:, client_id:, auth_type: :cookie, auth_flow: :pkce)
-      @base_url = base_url
-      @client_id = client_id
-      @auth_type = auth_type
-      @auth_flow = auth_flow
+    def initialize(**options)
+      @base_url = options[:base_url] || Config.base_url
+      @client_id = options[:client_id] || Config.client_id
+      @auth_type = options[:auth_type] || Config.auth_type
+      @auth_flow = options[:auth_flow] || Config.auth_flow
     end
 
     def grant_type
@@ -46,14 +62,6 @@ module SignInService
 
     def cookie_auth?
       auth_type.to_sym == COOKIE_AUTH
-    end
-
-    def to_h
-      {
-        base_url:,
-        client_id:,
-        auth_type:
-      }
     end
   end
 end

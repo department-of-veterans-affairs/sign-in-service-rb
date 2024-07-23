@@ -11,7 +11,7 @@ The Token Endpoint is responsible for exchanging an authorization code for sessi
 ### Example
 
 ```ruby
-  client = SignInService.client
+  client = SignInService::Client.new
 
   # Assuming you have a valid authorization code and code_verifier
   code = "your_authorization_code"

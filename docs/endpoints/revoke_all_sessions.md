@@ -10,7 +10,7 @@ The Revoke All Sessions Endpoint is responsible for revoking all sessions associ
 ##### Example Usage
 
 ```ruby
-  client = SignInService.client
+  client = SignInService::Client.new
 
   access_token access_token = "your_access_token"
 

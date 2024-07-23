@@ -10,7 +10,7 @@ The Logout Endpoint is responsible for logging out the user and revoking tokens.
 ##### Example Usage
 
 ```ruby
-  client = SignInService.client
+  client = SignInService::Client.new
 
   access_token = "your_id_token_hint"
   anti_csrf_token = "your_anti_csrf_token" # Optional

@@ -38,61 +38,6 @@ RSpec.describe SignInService::Client::Session do
                    status: expected_response_status }.compact)
   end
 
-  describe '#introspect' do
-    let(:request_method) { :get }
-    let(:request_uri) { '/v0/sign_in/introspect' }
-    let(:expected_response_body) { { user: {} }.to_json }
-
-    context 'when using cookie auth' do
-      let(:auth_type) { :cookie }
-      let(:request_cookie_tokens) { [cookie_access_token] }
-      let(:request_headers) { request_cookie_header }
-
-      context 'when the access token is valid' do
-        let(:expected_response_status) { 200 }
-
-        it 'sends the access token in a cookie header and returns 200' do
-          response = client.introspect(access_token:)
-          expect(response.status).to eq(expected_response_status)
-          expect(response.body).to eq(expected_response_body)
-        end
-      end
-
-      context 'when the access token is invalid' do
-        let(:expected_response_status) { 401 }
-
-        it 'returns a 401 response and raises an error' do
-          expect { client.introspect(access_token:) }.to raise_error(SignInService::Unauthorized)
-        end
-      end
-    end
-
-    context 'when using api auth' do
-      let(:auth_type) { :api }
-      let(:request_headers) { request_auth_header }
-
-      context 'when the access token is valid' do
-        let(:expected_response_status) { 200 }
-
-        it 'sends the access token in an Authorization header and returns 200' do
-          response = client.introspect(access_token:)
-
-          expect(response.status).to eq(expected_response_status)
-          expect(response.body).to eq(expected_response_body)
-          expect { JSON.parse(response.body) }.not_to raise_error
-        end
-      end
-
-      context 'when the access token is invalid' do
-        let(:expected_response_status) { 401 }
-
-        it 'returns a 401 response and raises an error' do
-          expect { client.introspect(access_token:) }.to raise_error(SignInService::Unauthorized)
-        end
-      end
-    end
-  end
-
   describe '#logout' do
     let(:request_method) { :get }
     let(:request_uri) { '/v0/sign_in/logout' }

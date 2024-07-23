@@ -21,12 +21,12 @@ module SignInService
       def authorize_uri(type:, acr:, code_challenge: nil, state: nil)
         uri = URI.join(base_url, AUTHORIZE_PATH)
         params = {
-          type:,
           acr:,
+          client_id:,
           code_challenge:,
           code_challenge_method:,
-          client_id:,
-          state:
+          state:,
+          type:
         }.compact
 
         uri.query = URI.encode_www_form(params)
@@ -47,12 +47,12 @@ module SignInService
       #
       def authorize(type:, acr:, code_challenge:, state: nil)
         params = {
-          type:,
           acr:,
+          client_id:,
           code_challenge:,
           code_challenge_method:,
-          client_id:,
-          state:
+          state:,
+          type:
         }.compact
 
         connection.get(AUTHORIZE_PATH, params)

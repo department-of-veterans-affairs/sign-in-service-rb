@@ -10,7 +10,7 @@ The Refresh Token Endpoint is responsible for refreshing session tokens.
 
 ### Example Usage
 ``` ruby
-  client = SignInService.client
+  client = SignInService::Client.new
 
   refresh_token = "your_refresh_token"
   anti_csrf_token = "your_anti_csrf_token" # Optional
