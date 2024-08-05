@@ -3,146 +3,135 @@
 require 'spec_helper'
 
 RSpec.describe SignInService::Error do
+  let(:response_headers) { { 'content-type' => 'application/json' } }
+
   describe '.from_response' do
-    let(:response) { { status:, response_headers: {}, body: '' } }
-    let(:status) { 'some-status' }
+    subject { described_class.from_response(response) }
 
-    context 'when the status code is 200' do
-      let(:status) { 200 }
+    context 'when response status is 400' do
+      let(:response) { { status: 400, body: '{"errors": "Bad Request"}', response_headers: } }
 
-      it 'returns nil' do
-        expect(described_class.from_response(response)).to be_nil
-      end
+      it { is_expected.to be_a(SignInService::BadRequest) }
     end
 
-    context 'when the status code is 400' do
-      let(:status) { 400 }
+    context 'when response status is 401' do
+      let(:response) { { status: 401, body: '{"errors": "Unauthorized"}', response_headers: } }
 
-      it 'returns a BadRequest error' do
-        expect(described_class.from_response(response)).to be_an_instance_of(SignInService::BadRequest)
-      end
+      it { is_expected.to be_a(SignInService::Unauthorized) }
     end
 
-    context 'when the status code is 401' do
-      let(:status) { 401 }
+    context 'when response status is 403' do
+      let(:response) { { status: 403, body: '{"errors": "Forbidden"}', response_headers: } }
 
-      it 'returns an Unauthorized error' do
-        expect(described_class.from_response(response)).to be_an_instance_of(SignInService::Unauthorized)
-      end
+      it { is_expected.to be_a(SignInService::Forbidden) }
     end
 
-    context 'when the status code is 403' do
-      let(:status) { 403 }
+    context 'when response status is 404' do
+      let(:response) { { status: 404, body: '{"errors": "Not Found"}', response_headers: } }
 
-      it 'returns a Forbidden error' do
-        expect(described_class.from_response(response)).to be_an_instance_of(SignInService::Forbidden)
-      end
+      it { is_expected.to be_a(SignInService::NotFound) }
     end
 
-    context 'when the status code is 404' do
-      let(:status) { 404 }
+    context 'when response status is 422' do
+      let(:response) { { status: 422, body: '{"errors": "Unprocessable Entity"}', response_headers: } }
 
-      it 'returns a NotFound error' do
-        expect(described_class.from_response(response)).to be_an_instance_of(SignInService::NotFound)
-      end
+      it { is_expected.to be_a(SignInService::UnprocessableEntity) }
     end
 
-    context 'when the status code is 422' do
-      let(:status) { 422 }
-
-      it 'returns an UnprocessableEntity error' do
-        expect(described_class.from_response(response)).to be_an_instance_of(SignInService::UnprocessableEntity)
+    context 'when response status is 500' do
+      let(:response) do
+        { status: 500, body: '{"errors": "Internal Server Error"}', response_headers: }
       end
+
+      it { is_expected.to be_a(SignInService::InternalServerError) }
     end
 
-    context 'when the status code is 500' do
-      let(:status) { 500 }
+    context 'when response status is 501' do
+      let(:response) { { status: 501, body: '{"errors": "Not Implemented"}', response_headers: } }
 
-      it 'returns an InternalServerError' do
-        expect(described_class.from_response(response)).to be_an_instance_of(SignInService::InternalServerError)
-      end
+      it { is_expected.to be_a(SignInService::NotImplemented) }
     end
 
-    context 'when the status code is 501' do
-      let(:status) { 501 }
+    context 'when response status is 502' do
+      let(:response) { { status: 502, body: '{"errors": "Bad Gateway"}', response_headers: } }
 
-      it 'returns a NotImplemented error' do
-        expect(described_class.from_response(response)).to be_an_instance_of(SignInService::NotImplemented)
-      end
+      it { is_expected.to be_a(SignInService::BadGateway) }
     end
 
-    context 'when the status code is 502' do
-      let(:status) { 502 }
+    context 'when response status is 503' do
+      let(:response) { { status: 503, body: '{"errors": "Service Unavailable"}', response_headers: } }
 
-      it 'returns a BadGateway error' do
-        expect(described_class.from_response(response)).to be_an_instance_of(SignInService::BadGateway)
-      end
+      it { is_expected.to be_a(SignInService::ServiceUnavailable) }
     end
 
-    context 'when the status code is 503' do
-      let(:status) { 503 }
+    context 'when response status is unknown client error' do
+      let(:response) { { status: 418, body: '{"errors": "I\'m a teapot"}', response_headers: } }
 
-      it 'returns a ServiceUnavailable error' do
-        expect(described_class.from_response(response)).to be_an_instance_of(SignInService::ServiceUnavailable)
-      end
+      it { is_expected.to be_a(SignInService::ClientError) }
     end
 
-    context 'when the status code does not exist' do
-      let(:status) { 600 }
+    context 'when response status is unknown server error' do
+      let(:response) { { status: 550, body: '{"errors": "Unknown Server Error"}', response_headers: } }
 
-      it 'returns nil' do
-        expect(described_class.from_response(response)).to be_nil
-      end
+      it { is_expected.to be_a(SignInService::ServerError) }
     end
   end
 
   describe '#initialize' do
-    let(:response) { { status: 404, response_headers:, body: } }
-    let(:response_headers) { 'some-headers' }
-    let(:body) { 'some-body' }
-    let(:expected_error_message) { 'some-error-message' }
+    subject(:error) { described_class.new(response) }
 
-    context 'when the response contains a JSON error message' do
-      let(:response_headers) { { 'content-type' => 'application/json' } }
+    let(:response) do
+      {
+        status: 400,
+        body: '{"errors": {"name": ["is invalid"]}}',
+        response_headers:
+      }
+    end
 
-      context 'when the response contains a message' do
-        let(:body) { { errors: 'Page not found' }.to_json }
-        let(:expected_error_message) { 'Page not found' }
+    it 'parses the response body' do
+      expect(error.response_body).to eq(errors: { name: ['is invalid'] })
+    end
 
-        it 'builds an error message from the JSON response' do
-          expect(described_class.new(response).message).to eq expected_error_message
-        end
+    it 'fetches errors from the response body' do
+      expect(error.errors).to eq(name: ['is invalid'])
+    end
+
+    it 'formats the error message correctly' do
+      expect(error.message).to eq('name is invalid')
+    end
+  end
+
+  describe '#format_errors' do
+    subject(:error) { described_class.new(response).send(:format_errors, errors) }
+
+    context 'when errors is a hash' do
+      let(:response) do
+        { status: 400, body: '{"errors": {"field": ["is required"]}}', response_headers: }
       end
+      let(:errors) { { field: ['is required'] } }
 
-      context 'when the response does not contain a message' do
-        let(:body) { '{}' }
-        let(:expected_error_message) { '' }
-
-        it 'builds an empty error message' do
-          expect(described_class.new(response).message).to eq expected_error_message
-        end
+      it 'formats the error message from a hash' do
+        expect(error).to eq('field is required')
       end
     end
 
-    context 'when the response contains a plain text error message' do
-      let(:response_headers) { { 'content-type' => 'text/plain' } }
-
-      context 'when the response contains a message' do
-        let(:body) { 'Page not found' }
-        let(:expected_error_message) { 'Page not found' }
-
-        it 'builds an error message from the plain text response' do
-          expect(described_class.new(response).message).to eq expected_error_message
-        end
+    context 'when errors is an array' do
+      let(:response) do
+        { status: 400, body: '{"errors": ["is required", "is too short"]}', response_headers: }
       end
+      let(:errors) { ['is required', 'is too short'] }
 
-      context 'when the response does not contain a message' do
-        let(:body) { '' }
-        let(:expected_error_message) { '' }
+      it 'formats the error message from an array' do
+        expect(error).to eq('is required, is too short')
+      end
+    end
 
-        it 'builds an empty error message' do
-          expect(described_class.new(response).message).to eq expected_error_message
-        end
+    context 'when errors is a string' do
+      let(:response) { { status: 400, body: '{"errors": "invalid request"}', response_headers: } }
+      let(:errors) { 'invalid request' }
+
+      it 'formats the error message from a string' do
+        expect(error).to eq('invalid request')
       end
     end
   end
