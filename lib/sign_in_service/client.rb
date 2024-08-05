@@ -50,7 +50,8 @@ module SignInService
 
     def connection
       @connection ||= Faraday.new(base_url) do |conn|
-        conn.request :url_encoded
+        conn.request :json
+        conn.response :json, content_type: /\bjson$/
         conn.adapter Faraday.default_adapter
         conn.use SignInService::Response::RaiseError
       end

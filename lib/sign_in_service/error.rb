@@ -2,7 +2,7 @@
 
 module SignInService
   class Error < StandardError
-    attr_reader :response
+    attr_reader :response, :response_headers, :response_body, :errors
 
     def self.from_response(response)
       status = response[:status].to_i
@@ -26,38 +26,55 @@ module SignInService
 
     def initialize(response)
       @response = response
-      super(build_error_message)
+      @response_headers = response[:response_headers]
+      @response_body = parsed_response_body
+      @errors = fetch_errors
+      super(error_message)
     end
 
     private
 
-    def build_error_message
-      response_message.to_s
-    end
-
-    def response_message
-      case data
+    def fetch_errors
+      case parsed_response_body
       when Hash
-        data[:errors]
+        parsed_response_body[:errors]
       when String
-        data
+        parsed_response_body
       end
     end
 
-    def data
-      @data ||= if response_headers['content-type'] =~ /json/
-                  JSON.parse(response_body, symbolize_names: true)
-                else
-                  response_body
-                end
+    def error_message
+      case errors
+      when Hash
+        format_errors(errors)
+      when String
+        errors
+      end
     end
 
-    def response_body
-      @response_body ||= response[:body]
+    def format_errors(errors)
+      case errors
+      when Hash
+        errors.flat_map do |key, values|
+          values.map { |message| "#{key} #{message}" }
+        end.join(', ')
+      when Array
+        errors.join(', ')
+      when String
+        errors
+      end
     end
 
-    def response_headers
-      @response_headers ||= response[:response_headers]
+    def parsed_response_body
+      @parsed_response_body ||= if response_headers['content-type'] =~ /json/
+                                  begin
+                                    JSON.parse(response[:body], symbolize_names: true)
+                                  rescue JSON::ParserError
+                                    {}
+                                  end
+                                else
+                                  response[:body]
+                                end
     end
   end
 

@@ -21,8 +21,8 @@ RSpec.describe SignInService::Client do
       expect(connection.url_prefix.to_s).to eq(base_url)
     end
 
-    it 'encodes request parameters in the URL-encoded format' do
-      expect(connection.builder.handlers).to include(Faraday::Request::UrlEncoded)
+    it 'encodes request parameters in the JSON format' do
+      expect(connection.builder.handlers).to include(Faraday::Request::Json)
     end
 
     it 'raises an error from the middleware' do
