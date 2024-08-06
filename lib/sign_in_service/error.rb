@@ -66,7 +66,7 @@ module SignInService
     end
 
     def parsed_response_body
-      @parsed_response_body ||= if response_headers['content-type'] =~ /json/
+      @parsed_response_body ||= if response_headers && response_headers['content-type'] =~ /json/
                                   begin
                                     JSON.parse(response[:body], symbolize_names: true)
                                   rescue JSON::ParserError
