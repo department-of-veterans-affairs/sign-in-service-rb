@@ -1,4 +1,4 @@
-Note: This repo is managed by the VSP-Identity team. Please reference our main product page here for contact information and questions.
+Note: This repo is managed by the VA.gov Identity team. Please reference our main product page here for contact information and questions.
 
 # SignInService Ruby Client
 
