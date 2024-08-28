@@ -48,3 +48,41 @@ With API authentication, tokens are returned in the response body. This approach
 - [Logout](docs/endpoints/logout.md) - Log out the user and revoke tokens.
 - [Revoke Token](docs/endpoints/revoke_token.md) - Revoke a sessions tokens.
 - [Revoke All Sessions](docs/endpoints/revoke_all_sessions.md) - Revoke all sessions associated with a user
+
+
+## STS Configuration
+
+```ruby
+
+SignInService::Sts.configure do |config|
+  config.base_url = 'https://api.va.gov' # Sign-in service URL
+  config.service_account_id = 'your_client_id'
+  config.issuer = 'your_client_secret',
+  config.scopes = ["https://api.va.gov/v0/some-path"]
+  config.user_attributes = ['icn'] # optional
+  config.private_key_path = 'path/to/private_key.pem'
+end
+```
+
+Or create a new instance of the STS client with the configuration (overrides the global configuration):
+
+```ruby
+sts_client = SignInService::Sts.new(
+  base_url: 'https://api.va.gov',
+  service_account_id: 'your_client_id',
+  issuer: 'your_client_secret',
+  scopes: ["https://api.va.gov/v0/some-path"],
+  user_attributes: ['icn'], # optional
+  private_key_path: 'path/to/private_key.pem'
+)
+```
+
+#### Token - `/v0/sign_in/token`
+
+When requesting a token you need to pass in a user_identifier to be used as the subject of the token. This can be an ICN, email, or any other unique identifier.
+
+```ruby
+sts = SignInService::Sts.new(user_identifier: '1234567890') # And other configuration options not in the global configuration
+
+token = sts.request_token
+```

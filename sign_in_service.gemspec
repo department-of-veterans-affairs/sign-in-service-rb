@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary = 'Wrapper for the VA SignInService API'
   spec.homepage = 'https://github.com/department-of-veterans-affairs/sign-in-service-rb'
   spec.license  = 'CC0-1.0'
-  spec.required_ruby_version = '>= 3.2.2'
+  spec.required_ruby_version = '>= 3.3'
 
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/department-of-veterans-affairs/sign-in-service-rb'
@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
 
   # Uncomment to register a new dependency of your gem
   spec.add_dependency 'faraday', '~> 2.7'
+  spec.add_dependency 'jwt', '~> 2.8'
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html

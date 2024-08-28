@@ -1,0 +1,55 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://staging-api.va.gov/v0/sign_in/token
+    body:
+      encoding: UTF-8
+      string: '{"grant_type":"urn:ietf:params:oauth:grant-type:jwt-bearer","assertion":"eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjQwMDAiLCJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSIsImF1ZCI6Imh0dHBzOi8vc3RhZ2luZy1hcGkudmEuZ292L3YwL3NpZ25faW4vdG9rZW4iLCJpYXQiOjE3MjEyNDgyNDgsImV4cCI6MTcyMTI0ODU0OCwianRpIjoiZDI5ZTNlZjNkYmE0ZTFlM2FiMTM0N2ZlODNiZmEzNTAiLCJzY29wZXMiOlsiaHR0cHM6Ly9zdGFnaW5nLWFwaS52YS5nb3Yvc2lnbl9pbi9jbGllbnRfY29uZmlncyJdLCJzZXJ2aWNlX2FjY291bnRfaWQiOiIwMWI4ZWJhYWM1MjE1Zjg0NjQwYWRlNzU2YjY0NWYyOCIsInVzZXJfYXR0cmlidXRlcyI6eyJpY24iOiIxMjM0NTYifX0.H9BFccjE6EmJ7MqQK8A1Rn6RvWIJVTy6C4Z0G0Ibd3ULfSWVwnLDFaYm6ElKTE5UXPHkIhohWY5wl1FggX-oENTnfb6yGZp5ffJWXZWEVomjg9AyKMzRxqXg4nE9uHrU5ErS8JjSqa5WY1PVlViIb9MBBviXfg2QTR90EW5niIxpvUwfAsdohRZm83jj8snaoEfWl-SkXbf7E9sHgU3OB-p_-IgI6xzC63Ht0y38jg6VVkVNFxGCr3LjTymKty5pQRKhLL8-b8AHo9_XvOBEX8ZlkQnIJiZc7GrZRaVuN-rGEARE2RSlIe18L0w722yK_IVLr9Oj99I5pkKIZIBzhg"}'
+    headers:
+      User-Agent:
+      - Faraday v2.10.0
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - '0'
+      X-Content-Type-Options:
+      - nosniff
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      X-Git-Sha:
+      - MISSING_GIT_REVISION
+      X-Github-Repository:
+      - https://github.com/department-of-veterans-affairs/vets-api
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"2bda9ccc7b7dd9b5ff25b905ed09afd9"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - b61e1cd0-e30d-4475-a28e-224bd616b5e5
+      X-Runtime:
+      - '0.069519'
+      Vary:
+      - Accept, Origin
+      Content-Length:
+      - '819'
+    body:
+      encoding: UTF-8
+      string: '{"data":{"access_token":"eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJ2YS5nb3Ygc2lnbiBpbiIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDAwMCIsImp0aSI6IjdjMmM3YmI3LTMzMzctNDc2My05NTA1LTVhMDQzYTUyMTEwMCIsInN1YiI6InRlc3RAZW1haWwuY29tIiwiZXhwIjoxNzIxMjQ1NTU2LCJpYXQiOjE3MjEyNDUyNTYsInZlcnNpb24iOiJWMCIsInNjb3BlcyI6WyJodHRwOi8vbG9jYWxob3N0OjMwMDAvc2lnbl9pbi9jbGllbnRfY29uZmlncyJdLCJzZXJ2aWNlX2FjY291bnRfaWQiOiIwMWI4ZWJhYWM1MjE1Zjg0NjQwYWRlNzU2YjY0NWYyOCIsInVzZXJfYXR0cmlidXRlcyI6eyJpY24iOiIxMjM0NTYifX0.z9ds1J-zw_oncK25keGfk6H7MLmfmF8dq8pvWaaXfC_rGgXHKaQTp_qKgFOLTzVp2e9TwsdHdz1pEbHUT8-Gj3RcTf7CF2wbT4j1xd_KSHJo3UT_tw9qtc0fIHu3dbJbB0s9xi_iUgMo-mnwyBKkNxXpFIle2zlR3EGJHk0nDg7ld4uHx-LRGRTO-5zNYCXw5X9DBOiLVHYZYZ8pm-5BUkN2Dreszau5aA5c_rdZKTnmfMWh90tMsrCqRAqjT66aUnFoDZktPLNPgpIqBd-phZFnQUvIwEJ9qoGNANJvDMWOZPpfJIQb8T8kG5jEDv6iFcP1p7g6VB2xNUOGy1pLWA"}}'
+  recorded_at: Wed, 17 Jul 2024 19:40:56 GMT
+recorded_with: VCR 6.2.0
