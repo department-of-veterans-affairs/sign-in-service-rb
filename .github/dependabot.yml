@@ -1,8 +1,15 @@
 version: 2
 updates:
-  - package-ecosystem: 'bundler'
+  - package-ecosystem: bundler
     directory: '/'
     schedule:
-      interval: 'daily'
-      time: '15:00'
-      timezone: 'UTC'
+      interval: daily
+      time: '09:00'
+      timezone: America/New_York
+    groups:
+      patch-and-minor:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
