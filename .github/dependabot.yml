@@ -3,7 +3,8 @@ updates:
   - package-ecosystem: bundler
     directory: '/'
     schedule:
-      interval: daily
+      interval: weekly
+      day: monday
       time: '09:00'
       timezone: America/New_York
     groups:
